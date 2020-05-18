@@ -1,8 +1,11 @@
-import React from "react";
-import { View, Text } from "react-native";
+import React, { Component } from "react";
+import { Text, View } from "react-native";
 import { Card } from "react-native-elements";
+import { DISHES } from "../shared/dishes";
 
-const RenderDish = ({dish}) => {
+function RenderDish(props) {
+  const dish = props.dish;
+
   if (dish != null) {
     return (
       <Card
@@ -15,10 +18,19 @@ const RenderDish = ({dish}) => {
   } else {
     return <View></View>;
   }
-};
+}
 
-const Dishdetail = (props) => {
-  return <RenderDish dish={props.dish} />;
-};
+class Dishdetail extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dishes: DISHES,
+    };
+  }
 
+  render() {
+    const dishId = this.props.route.params.dishId;
+    return <RenderDish dish={this.state.dishes[+dishId]} />;
+  }
+}
 export default Dishdetail;
