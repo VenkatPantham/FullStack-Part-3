@@ -12,6 +12,7 @@ import About from "./AboutComponent";
 import Menu from "./MenuComponent";
 import Dishdetail from "./DishdetailComponent";
 import Contact from "./ContactComponent";
+import Reservation from './ReservationComponent';
 import { connect } from "react-redux";
 import {
   fetchDishes,
@@ -119,6 +120,23 @@ const ContactNavigator = () => {
   );
 };
 
+const ReservationNavigator = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="Reserve Table"
+      screenOptions={HeaderOptions}
+    >
+      <Stack.Screen
+        name="Reserve Table"
+        component={Reservation}
+        options={({ navigation }) => ({
+          headerLeft: () => <MenuIcon navigation={navigation} />,
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
+
 const CustomDrawerContentComponent = (props) => (
   <ScrollView>
     <View style={styles.drawerHeader}>
@@ -188,6 +206,15 @@ const MainNavigatorDrawer = () => {
               size={22}
               color={color}
             />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Reserve Table"
+        component={ReservationNavigator}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Icon name="cutlery" type="font-awesome" size={24} color={color} />
           ),
         }}
       />
