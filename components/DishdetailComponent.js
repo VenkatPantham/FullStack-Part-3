@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import { Text, View, ScrollView, FlatList } from "react-native";
 import { Card, Icon } from "react-native-elements";
-  import { connect } from "react-redux";
-  import { baseUrl } from "../shared/baseUrl";
+import { connect } from "react-redux";
+import { baseUrl } from "../shared/baseUrl";
 
-  const mapStateToProps = (state) => {
-    return {
-      dishes: state.dishes,
-      comments: state.comments,
-    };
+const mapStateToProps = (state) => {
+  return {
+    dishes: state.dishes,
+    comments: state.comments,
   };
+};
 
 const RenderDish = (props) => {
   const dish = props.dish;
@@ -18,7 +18,7 @@ const RenderDish = (props) => {
       <Card featuredTitle={dish.name} image={{ uri: baseUrl + dish.image }}>
         <Text style={{ margin: 10 }}>{dish.description}</Text>
         <Icon
-          raised  
+          raised
           reverse
           name={props.favorite ? "heart" : "heart-o"}
           type="font-awesome"
