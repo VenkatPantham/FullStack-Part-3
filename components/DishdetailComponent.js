@@ -3,13 +3,19 @@ import { Text, View, ScrollView, FlatList } from "react-native";
 import { Card, Icon } from "react-native-elements";
 import { connect } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
+import { postFavorite } from "../redux/ActionCreators";
 
 const mapStateToProps = (state) => {
   return {
     dishes: state.dishes,
     comments: state.comments,
+    favorites: state.favorites,
   };
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  postFavorite: (dishId) => dispatch(postFavorite(dishId)),
+});
 
 const RenderDish = (props) => {
   const dish = props.dish;
@@ -23,7 +29,9 @@ const RenderDish = (props) => {
           name={props.favorite ? "heart" : "heart-o"}
           type="font-awesome"
           color="#f50"
-          onPress={() => props.onPress()}
+          onPress={() =>
+            props.favorite ? console.log("Already Favorited") : props.onPress()
+          }
         />
       </Card>
     );
@@ -57,19 +65,8 @@ const RenderComments = ({ comments }) => {
 };
 
 class Dishdetail extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      favorites: [],
-    };
-  }
-
   markFavorite(dishId) {
-    this.state.favorites.some((el) => el === dishId)
-      ? this.setState({
-          favorites: this.state.favorites.filter((el) => el !== dishId),
-        })
-      : this.setState({ favorites: this.state.favorites.concat(dishId) });
+    this.props.postFavorite(dishId);
   }
 
   render() {
@@ -78,7 +75,7 @@ class Dishdetail extends Component {
       <ScrollView>
         <RenderDish
           dish={this.props.dishes.dishes[+dishId]}
-          favorite={this.state.favorites.some((el) => el === dishId)}
+          favorite={this.props.favorites.some((el) => el === dishId)}
           onPress={() => this.markFavorite(dishId)}
         />
         <RenderComments
@@ -90,4 +87,4 @@ class Dishdetail extends Component {
     );
   }
 }
-export default connect(mapStateToProps)(Dishdetail);
+export default connect(mapStateToProps, mapDispatchToProps)(Dishdetail);
