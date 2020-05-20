@@ -121,6 +121,23 @@ const ContactNavigator = () => {
   );
 };
 
+const FavoritesNavigator = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="My Favorites"
+      screenOptions={HeaderOptions}
+    >
+      <Stack.Screen
+        name="My Favorites"
+        component={Favorites}
+        options={({ navigation }) => ({
+          headerLeft: () => <MenuIcon navigation={navigation} />,
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
+
 const ReservationNavigator = () => {
   return (
     <Stack.Navigator
@@ -207,6 +224,15 @@ const MainNavigatorDrawer = () => {
               size={22}
               color={color}
             />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="My Favorites"
+        component={FavoritesNavigator}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Icon name="heart" type="font-awesome" size={22} color={color} />
           ),
         }}
       />
