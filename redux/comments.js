@@ -21,9 +21,9 @@ export const Comments = (
         errMess: null,
         comments: action.payload,
       };
-    // case ActionTypes.ADD_COMMENT:
-    //   var comment = action.payload;
-    //   return { ...state, comments: state.comments.concat(comment) };
+    case ActionTypes.ADD_COMMENT:
+      var comment = action.payload;
+      return { ...state, comments: state.comments.concat(comment) };
     default:
       return state;
   }

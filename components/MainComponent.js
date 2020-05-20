@@ -12,7 +12,8 @@ import About from "./AboutComponent";
 import Menu from "./MenuComponent";
 import Dishdetail from "./DishdetailComponent";
 import Contact from "./ContactComponent";
-import Reservation from './ReservationComponent';
+import Favorites from "./FavoriteComponent";
+import Reservation from "./ReservationComponent";
 import { connect } from "react-redux";
 import {
   fetchDishes,
