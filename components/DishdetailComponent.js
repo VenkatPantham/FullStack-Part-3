@@ -9,6 +9,7 @@ import {
   Button,
   Alert,
   PanResponder,
+  Share,
 } from "react-native";
 import { Card, Icon, Rating, Input } from "react-native-elements";
 import { connect } from "react-redux";
@@ -88,6 +89,20 @@ const RenderDish = (props) => {
       }
     },
   });
+
+  const shareDish = (title, message, url) => {
+    Share.share(
+      {
+        title: title,
+        message: title + ": " + message + " " + url,
+        url: url,
+      },
+      {
+        dialogTitle: "Share " + title,
+      }
+    );
+  };
+
   if (dish != null) {
     return (
       <Animatable.View
@@ -100,30 +115,37 @@ const RenderDish = (props) => {
         <Card featuredTitle={dish.name} image={{ uri: baseUrl + dish.image }}>
           <Text style={{ margin: 10 }}>{dish.description}</Text>
           <View style={({ flex: 1 }, { flexDirection: "row" })}>
-            <View style={({ flex: 1 }, { alignSelf: "flex-end" })}>
-              <Icon
-                raised
-                reverse
-                name={props.favorite ? "heart" : "heart-o"}
-                type="font-awesome"
-                color="#f50"
-                onPress={() =>
-                  props.favorite
-                    ? console.log("Already Favorited")
-                    : props.markFavorite()
-                }
-              />
-            </View>
-            <View style={({ flex: 1 }, { alignSelf: "flex-start" })}>
-              <Icon
-                raised
-                reverse
-                name={"pencil"}
-                type="font-awesome"
-                color="#512DA8"
-                onPress={() => props.toggleModal()}
-              />
-            </View>
+            <Icon
+              raised
+              reverse
+              name={props.favorite ? "heart" : "heart-o"}
+              type="font-awesome"
+              color="#f50"
+              onPress={() =>
+                props.favorite
+                  ? console.log("Already Favorited")
+                  : props.markFavorite()
+              }
+            />
+            <Icon
+              raised
+              reverse
+              name={"pencil"}
+              type="font-awesome"
+              color="#512DA8"
+              onPress={() => props.toggleModal()}
+            />
+            <Icon
+              raised
+              reverse
+              name="share"
+              type="font-awesome"
+              color="#51D2A8"
+              style={styles.cardItem}
+              onPress={() =>
+                shareDish(dish.name, dish.description, baseUrl + dish.image)
+              }
+            />
           </View>
         </Card>
       </Animatable.View>
