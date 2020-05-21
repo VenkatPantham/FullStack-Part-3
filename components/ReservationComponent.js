@@ -27,11 +27,11 @@ class Reservation extends Component {
   handleReservation() {
     Alert.alert(
       "Your Reservation Ok?",
-      "Number of Guests " +
+      "Number of Guests : " +
         this.state.guests +
         "\nSmoking? " +
         this.state.smoking +
-        "\nDate and Time " +
+        "\nDate and Time : " +
         this.state.date,
       [
         {

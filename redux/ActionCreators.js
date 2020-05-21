@@ -1,46 +1,6 @@
 import * as ActionTypes from "./ActionTypes";
 import { baseUrl } from "../shared/baseUrl";
 
-// export const postFeedback = (Feedback) => (dispatch) => {
-//   const newFeedback = {
-//     ...Feedback,
-//     date: new Date().toISOString(),
-//   };
-
-//   return fetch(baseUrl + "feedback", {
-//     method: "POST",
-//     body: JSON.stringify(newFeedback),
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     credentials: "same-origin",
-//   })
-//     .then(
-//       (response) => {
-//         if (response.ok) {
-//           return response;
-//         } else {
-//           var error = new Error(
-//             "Error " + response.status + ": " + response.statusText
-//           );
-//           error.response = response;
-//           throw error;
-//         }
-//       },
-//       (error) => {
-//         throw error;
-//       }
-//     )
-//     .then((response) => response.json())
-//     .then((response) => {
-//       alert("Thank you for your feedback!\n" + JSON.stringify(response));
-//     })
-//     .catch((error) => {
-//       console.log(" post feedback", error.message);
-//       alert("Your comment could not be posted\nError: " + error.message);
-//     });
-// };
-
 export const fetchDishes = () => (dispatch) => {
   dispatch(dishesLoading(true));
   return fetch(baseUrl + "dishes")
@@ -188,15 +148,6 @@ export const addLeaders = (leaders) => ({
   payload: leaders,
 });
 
-export const postFavorite = (dishId) => (dispatch) => {
-  setTimeout(() => dispatch(addFavorite(dishId)), 2000);
-};
-
-export const addComment = (comment) => ({
-  type: ActionTypes.ADD_COMMENT,
-  payload: comment,
-});
-
 export const postComment = (dishId, rating, author, comment) => (dispatch) => {
   const newComment = {
     dishId: dishId,
@@ -234,8 +185,16 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
     .then((response) => dispatch(addComment(response)))
     .catch((error) => {
       console.log("post comments", error.message);
-      alert("Your comment could not be posted\nError: " + error.message);
     });
+};
+
+export const addComment = (comment) => ({
+  type: ActionTypes.ADD_COMMENT,
+  payload: comment,
+});
+
+export const postFavorite = (dishId) => (dispatch) => {
+  setTimeout(() => dispatch(addFavorite(dishId)), 2000);
 };
 
 export const addFavorite = (dishId) => ({

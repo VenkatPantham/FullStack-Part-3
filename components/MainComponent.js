@@ -7,6 +7,7 @@ import {
   createDrawerNavigator,
   DrawerItemList,
 } from "@react-navigation/drawer";
+import Login from "./LoginComponent";
 import Home from "./HomeComponent";
 import About from "./AboutComponent";
 import Menu from "./MenuComponent";
@@ -54,6 +55,20 @@ const MenuIcon = (props) => {
       color="white"
       onPress={() => props.navigation.toggleDrawer()}
     />
+  );
+};
+
+const LoginNavigator = () => {
+  return (
+    <Stack.Navigator initialRouteName="Login" screenOptions={HeaderOptions}>
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={({ navigation }) => ({
+          headerLeft: () => <MenuIcon navigation={navigation} />,
+        })}
+      />
+    </Stack.Navigator>
   );
 };
 
@@ -182,6 +197,15 @@ const MainNavigatorDrawer = () => {
       drawerContent={(props) => <CustomDrawerContentComponent {...props} />}
     >
       <Drawer.Screen
+        name="Login"
+        component={LoginNavigator}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Icon name="sign-in" type="font-awesome" size={24} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
         name="Home"
         component={HomeNavigator}
         options={{
@@ -221,7 +245,7 @@ const MainNavigatorDrawer = () => {
             <Icon
               name="address-card"
               type="font-awesome"
-              size={22}
+              size={24}
               color={color}
             />
           ),
@@ -232,7 +256,7 @@ const MainNavigatorDrawer = () => {
         component={FavoritesNavigator}
         options={{
           drawerIcon: ({ color }) => (
-            <Icon name="heart" type="font-awesome" size={22} color={color} />
+            <Icon name="heart" type="font-awesome" size={24} color={color} />
           ),
         }}
       />
