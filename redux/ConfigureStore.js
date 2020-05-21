@@ -1,5 +1,4 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
-// import { createForms } from "react-redux-form";
 import { Dishes } from "./dishes";
 import { Comments } from "./comments";
 import { Promotions } from "./promotions";
@@ -7,7 +6,6 @@ import { Leaders } from "./leaders";
 import { Favorites } from "./favorites";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
-// import AsyncStorage from "@react-native-community/async-storage";
 import { persistStore, persistCombineReducers } from "redux-persist";
 import storage from "redux-persist/es/storage";
 
