@@ -6,13 +6,14 @@ import {
   Picker,
   Switch,
   Button,
-  Modal,
   Alert,
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import * as Animatable from "react-native-animatable";
 import * as Permissions from "expo-permissions";
+import * as Calendar from "expo-calendar";
 import { Notifications } from "expo";
+import { baseUrl } from "../shared/baseUrl";
 
 class Reservation extends Component {
   constructor(props) {
@@ -25,6 +26,15 @@ class Reservation extends Component {
       showModal: false,
     };
   }
+
+  componentDidMount = async () => {
+    if (Platform.OS === "android") {
+      Notifications.createChannelAndroidAsync("chat-messages", {
+        name: "Chat messages",
+        sound: true,
+      });
+    }
+  };
 
   handleReservation() {
     Alert.alert(
@@ -45,9 +55,9 @@ class Reservation extends Component {
           text: "Ok",
           onPress: () => {
             this.presentLocalNotification(this.state.date);
+            this.addReservationToCalendar(this.state.date);
             this.resetForm();
           },
-          style: "ok",
         },
       ],
       { cancelable: false }
@@ -60,6 +70,47 @@ class Reservation extends Component {
       smoking: false,
       date: "",
       showModal: false,
+    });
+  }
+
+  async obtainCalendarPermission() {
+    const calendarPermission = await Permissions.askAsync(Permissions.CALENDAR);
+    if (calendarPermission.status !== "granted") {
+      Alert.alert("Permission not granted to show Calendar");
+    }
+  }
+
+  async getDefaultCalendarSource() {
+    const calendars = await Calendar.getCalendarsAsync();
+    const defaultCalendars = calendars.filter(
+      (each) => each.source.name === "Default"
+    );
+    return defaultCalendars[0].source;
+  }
+
+  async addReservationToCalendar(date) {
+    await this.obtainCalendarPermission();
+    const defaultCalendarSource =
+      Platform.OS === "ios"
+        ? await getDefaultCalendarSource()
+        : { isLocalAccount: true, name: "Con Fusion Restaurant" };
+    const newCalendarID = await Calendar.createCalendarAsync({
+      title: "Con Fusion Restaurant",
+      color: "blue",
+      entityType: Calendar.EntityTypes.EVENT,
+      sourceId: defaultCalendarSource.id,
+      source: defaultCalendarSource,
+      name: "internalCalendarName",
+      ownerAccount: "personal",
+      accessLevel: Calendar.CalendarAccessLevel.OWNER,
+    });
+    const newCalendarEvent = await Calendar.createEventAsync(newCalendarID, {
+      title: "Con Fusion Table Reservation",
+      startDate: new Date(Date.parse(date)),
+      endDate: new Date(Date.parse(date) + 2 * 60 * 60 * 1000),
+      timeZone: "Asia/Kolkata",
+      location:
+        "121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong",
     });
   }
 
@@ -87,9 +138,11 @@ class Reservation extends Component {
         sound: true,
       },
       android: {
-        vibrate: true,
+        channelId: "chat-messages",
         sound: true,
-        color: "#512DA8",
+        vibrate: true,
+        color: "#512DF8",
+        icon: baseUrl + "images/logo.png",
       },
     });
   }
